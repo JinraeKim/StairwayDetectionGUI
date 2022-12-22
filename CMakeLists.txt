@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.6 FATAL_ERROR)
 
 project      (pcl-visualizer)
-find_package (Qt5Widgets)
+find_package (Qt5 REQUIRED COMPONENTS Widgets Core)
 #find_package (Qt5 COMPONENT Core REQUIRED)
 find_package (VTK REQUIRED)
 find_package (PCL 1.7.1 REQUIRED)
@@ -22,12 +22,14 @@ include_directories (${PCL_INCLUDE_DIRS})
 link_directories    (${PCL_LIBRARY_DIRS})
 add_definitions     (${PCL_DEFINITIONS})
 
+#add_library(-lQt5Widgets)
+
 include_directories ("${PROJECT_SOURCE_DIR}/include")
 
 set  (project_SOURCES src/main.cpp src/pclviewer.cpp src/voxSAC.cpp src/regiongrowing.cpp src/preanalysis.cpp src/regions.cpp src/segmentPatch.cpp src/splitmerge.cpp src/recognition.cpp src/planeshape.cpp src/Stairs.cpp src/StairVector.cpp)
 set  (project_HEADERS include/stairs/pclviewer.h)
 set  (project_FORMS   src/pclviewer.ui)
-# set  (VTK_LIBRARIES   vtkRendering vtkGraphics vtkHybrid QVTK)
+#set  (VTK_LIBRARIES   vtkRendering vtkGraphics vtkHybrid QVTK)
 
 QT5_WRAP_CPP (project_HEADERS_MOC   ${project_HEADERS})
 QT5_WRAP_UI  (project_FORMS_HEADERS ${project_FORMS})
@@ -39,7 +41,11 @@ ADD_EXECUTABLE  (pcl_visualizer ${project_SOURCES}
                                 ${project_FORMS_HEADERS}
                                 ${project_HEADERS_MOC})
 
-TARGET_LINK_LIBRARIES (pcl_visualizer ${QT_LIBRARIES} ${PCL_LIBRARIES} ${VTK_LIBRARIES})
+TARGET_LINK_LIBRARIES (pcl_visualizer ${QT_LIBRARIES} ${PCL_LIBRARIES} ${VTK_LIBRARIES} Qt5::Widgets Qt5::Core /usr/lib/x86_64-linux-gnu/libvtkGUISupportQt-7.1.so)
+
+#TARGET_LINK_LIBRARIES (pcl_visualizer ${PCL_LIBRARIES})
+
+qt5_use_modules (pcl_visualizer Widgets Core)
 
 #set  (project_HEADERS include/stairs/referenceSegmentation.h)
 #ADD_EXECUTABLE  (refSeg src/referenceSegmentation.cpp

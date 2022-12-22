@@ -15,7 +15,10 @@ make -j8
 ./pcl_visualizer
 ```
 
-Depending on the version there might be an linker error - in this case try replacing CMakeLists.txt with CMakeLists_V2.txt
+"Depending on the version there might be an linker error - in this case try replacing CMakeLists.txt with CMakeLists_V2.txt."
+is from the README.md of original repo.
+In this repo, we renamed `CMakeLists_V2.txt` to `CMakeLists.txt` and `CMakeLists.txt` to `CMakeLists.txt.bak` as only V2 works.
+
 
 There are 2 example pcd files in the example folder to test the algorihtm. When loading point cloud, the main window does not change its view automatically and has to be changed using keyboard/mouse to alighn the point cloud in the window.
 
@@ -32,3 +35,7 @@ The processing steps of the algorihm are explained in our papers:
 "3D graph based stairway detection and localization for mobile robots" (http://ieeexplore.ieee.org/document/7759096/) (IROS).
 
 ![alt text](https://github.com/ThomasWestfechtel/StairwayDetection/blob/master/pics/stairGraph.png "Graph-based Detection")
+
+
+# Note
+To extract `.pcd` files from `.bag` files, use [this command](http://wiki.ros.org/pcl_ros#Usage).
