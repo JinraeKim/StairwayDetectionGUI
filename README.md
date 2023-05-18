@@ -39,3 +39,51 @@ The processing steps of the algorihm are explained in our papers:
 
 # Note
 To extract `.pcd` files from `.bag` files, use [this command](http://wiki.ros.org/pcl_ros#Usage).
+
+
+## To test the files provided in ths repo with your own stair localizer
+This repo provides some test data in `./examples` as a color image (.png) and XYZ pointcloud (.pcd).
+
+Follow this instruction to test your own stair localizer:
+
+### Step 1: transform the pointcloud saved in .pcd (if necessary)
+NOTICE: for https://github.com/SunggooJung/stair_detection/pull/1,
+the converted pcd file is already provided as `./examples/13_Depth_converted.pcd`.
+You can skip the Step 1 if you need that.
+
+You can publish a pointcloud topic (name: `cloud_pcd`) using `pcl_ros` as follows.
+Note that you can specify the frame id as well.
+```
+rosrun pcl_ros pcd_to_pointcloud examples/13_Depth.pcd 0.1 _frame_id:=spot1/base_link
+```
+Note that the stairway in the original .pcd file seems like follow the "ENU" (EAST/NORTH/UP)-like frame.
+
+Generate a virtual base link for the transform.
+
+```
+python3 virtual_base_link.py
+```
+
+While running the above node, convert the published pointcloud to a desired frame as follows.
+```
+python3 convert_frame.py spot1/camera_front_color_optical_frame
+```
+
+Then, save it as a .pcd file using `pcl_ros`.
+
+```
+rosrun pcl_ros pointcloud_to_pcd input:=/cloud_pcd_converted
+```
+
+This is because transforming pointclouds in Python is very slow (e.g. `do_transform_cloud` in `./convert_frame.py`); save and republish it.
+
+Close the above running nodes and rename the saved pcd file as `examples/13_Depth_converted.pcd`,
+
+
+### Step 2: Republish the converted pcd file
+Republishing the saved pcd file can be done as follows.
+
+```
+rosrun pcl_ros pcd_to_pointcloud examples/13_Depth_converted.pcd 0.1 _frame_id:=spot1/camera_front_color_optical_frame
+```
+
