@@ -32,7 +32,7 @@ class PCDConverter:
             rospy.logwarn(ex)
             return
         pcd_out = do_transform_cloud(pcd_msg, trans)  # it is quite slow; like for each 0.4 s
-        self.pcd_pub.publish(pcd_msg)
+        self.pcd_pub.publish(pcd_out)
         print(f"Converting pcd... (frame: {pcd_msg.header.frame_id} to {self.target_frame})")
 
 

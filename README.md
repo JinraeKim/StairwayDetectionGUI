@@ -75,15 +75,30 @@ Then, save it as a .pcd file using `pcl_ros`.
 rosrun pcl_ros pointcloud_to_pcd input:=/cloud_pcd_converted
 ```
 
-This is because transforming pointclouds in Python is very slow (e.g. `do_transform_cloud` in `./convert_frame.py`); save and republish it.
+This is because transforming pointclouds in Python is very slow (e.g. `do_transform_cloud` in `./convert_frame.py`); save and then publish it.
 
 Close the above running nodes and rename the saved pcd file as `examples/13_Depth_converted.pcd`,
 
 
 ### Step 2: Republish the converted pcd file
-Republishing the saved pcd file can be done as follows.
+Publishing the saved pcd file can be done as follows.
 
 ```
 rosrun pcl_ros pcd_to_pointcloud examples/13_Depth_converted.pcd 0.1 _frame_id:=spot1/camera_front_color_optical_frame
 ```
 
+### Step 3: Preprocess data and use them for test (only for https://github.com/SunggooJung/stair_detection/pull/1)
+Use the following command while publishing the converted pointcloud (in Step 2).
+```
+python3 preprocess.py examples/13_RGB.png
+```
+
+Then, running stair detector and localizer, respectively, as follows:
+
+```
+roslaunch stair_detection stair_detection.launch
+```
+
+```
+roslaunch stair_localization stair_localization.launch
+```
